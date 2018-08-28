@@ -1,6 +1,6 @@
 FROM php:7.2.8-apache
 
-MAINTAINER Roberto Geoffroy - Claudio Iturburu
+MAINTAINER Geoffroy Roberto - Iturburu Claudio
 
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
@@ -34,6 +34,20 @@ RUN apt-get update && \
 RUN docker-php-ext-install bcmath
 # Manejador de dependencias de composer
 RUN composer require fxp/composer-asset-plugin
+
+#******************************************************************
+# Git
+RUN apt-get install -y git
+
+#******************************************************************
+# NodeJs https://www.yiiframework.com/extension/yii-node-socket
+RUN mkdir /var/nodejs
+RUN git clone https://github.com/oncesk/yii-node-socket.git /var/nodejs
+RUN cd /var/nodejs
+#RUN git submodule init
+#RUN git submodule update
+#RUN npm install
+
 
 COPY ./config/apache2-foreground /usr/local/bin/
 RUN chmod +x /usr/local/bin/apache2-foreground

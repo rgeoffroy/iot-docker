@@ -9,17 +9,41 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ../../www:/var/www/html
+      - ../www:/var/www/html
       - "./wp-init.sh:/usr/local/bin/apache2-custom.sh"
     environment:
       - AMBIENTE=desarrollo
     ports:
       - "8080:80"
       - "8089:8089"
-      - "8085:8085"
+    depends_on:
+      - psg10
     command:
       - apache2-custom.sh
     labels:
       apache72: "Apache ambiente de DESARROLLO"
 
+  psg10:
+    container_name: psg10
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: iot
+      POSTGRES_PASSWORD: iot
+      POSTGRES_DB: iot
+    volumes:
+      - ../postgresql:/var/lib/postgresql
+    ports:
+      - "8010:5432"
 
+#  flyway:
+#    container_name: flyway
+#    image: boxfuse/flyway
+#    command: 
+#      - url=jdbc:postgres://iot -schemas=iot -user=iot -password=iot migrate
+#    volumes:
+#      - ../www:/flyway/sql
+#    depends_on:
+#      - psg10
+
+  
