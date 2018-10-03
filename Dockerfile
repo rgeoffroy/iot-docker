@@ -41,6 +41,7 @@ RUN apt-get install -y git
 
 #******************************************************************
 # NodeJs https://www.yiiframework.com/extension/yii-node-socket
+RUN apt-get update && apt-get install -y nodejs && apt-get install -y build-essential
 RUN mkdir /var/nodejs
 RUN git clone https://github.com/oncesk/yii-node-socket.git /var/nodejs
 RUN cd /var/nodejs

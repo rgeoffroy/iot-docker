@@ -14,14 +14,24 @@ services:
     environment:
       - AMBIENTE=desarrollo
     ports:
-      - "8080:80"
-      - "8089:8089"
+      - "8072:80"
+      - "8019:8019"
     depends_on:
       - psg10
     command:
       - apache2-custom.sh
     labels:
       apache72: "Apache ambiente de DESARROLLO"
+
+  flyway:
+    container_name: flyway
+    image: boxfuse/flyway
+    command: 
+      - url=jdbc:postgresql://psg10 -schemas=iot -user=iot -password=iot migrate
+    volumes:
+      - ../www/iot/sql:/flyway/sql
+    depends_on:
+      - psg10
 
   psg10:
     container_name: psg10
@@ -36,14 +46,5 @@ services:
     ports:
       - "8010:5432"
 
-#  flyway:
-#    container_name: flyway
-#    image: boxfuse/flyway
-#    command: 
-#      - url=jdbc:postgres://iot -schemas=iot -user=iot -password=iot migrate
-#    volumes:
-#      - ../www:/flyway/sql
-#    depends_on:
-#      - psg10
 
   
